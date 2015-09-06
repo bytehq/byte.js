@@ -185,6 +185,8 @@ var render = function (post) {
                 $node.css('box-sizing', 'border-box');
                 $node.css('text-align', object['alignment'] || 'left');
                 $node.css('white-space', 'pre-wrap');
+                $node.text(object['text']);
+                
                 break;
 
             case 'video':
