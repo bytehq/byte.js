@@ -77,6 +77,7 @@ var render = function (post) {
         var $node;
         var frame = object['frame'];
         var transform = object['transform'];
+        var opacity = object['opacity'];
 
         switch (object['type']) {
             case 'graphic':
@@ -251,6 +252,10 @@ var render = function (post) {
                     transform[2][1]
                 ].join(', ');
                 $node.css('transform', 'matrix(' + transformString + ')');
+            }
+
+            if (opacity) {
+                $node.css('opacity', opacity);
             }
 
             $rootNode.append($node);
