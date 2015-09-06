@@ -11,11 +11,12 @@ Very early. Here's a quick list of what's left to do:
 - `Music` object
 - Sound on `Video` objects
 - Color fills on `Graphic` objects
-- ~~Text rendering for `Text` and `Paragraph` is missing several fonts and behaves oddly in certain scenarios~~
-- ~~Opacity for all objects~~
-- Effects for all objects
+- Text wrapping on Links
+- Effects
 - Unit tests
 - ~~Retina support~~
+- ~~Text rendering for `Text` and `Paragraph` is missing several fonts and behaves oddly in certain scenarios~~
+- ~~Opacity for all objects~~
 
 #### 💘 Contributions and pull requests welcome!
 
