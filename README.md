@@ -1,6 +1,6 @@
-# bff-html
+# byte.js
 
-Byte rendering implemented in HTML, CSS, and a bit of Canvas.
+Byte rendering implemented in Javascript, HTML, CSS, and a bit of Canvas.
 
 ![](http://i.imgur.com/cHhpGWj.gif)
 
