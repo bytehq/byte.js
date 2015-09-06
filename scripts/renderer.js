@@ -179,7 +179,9 @@ var render = function (post) {
 
                 $node = $('<p>');
                 $node.css('font-family', getFontNameForStyle(object['style']));
-                $node.css('font-size', object['size'] || 17);
+                var fontSize = object['size'] || 17;
+                $node.css('font-size', fontSize);
+                $node.css('line-height', parseInt(fontSize * 1.5) + 'px')
                 $node.css('color', getColorFromArray(object['color']));
                 $node.css('box-sizing', 'border-box');
                 $node.css('text-align', object['alignment'] || 'left');
