@@ -186,10 +186,19 @@ var render = function (post) {
                 break;
 
             case 'video':
-                $node = $('<video muted loop autoplay>');
-                $node[0].width = frame[2];
-                $node[0].height = frame[3];
-                $node.append('<source src="' + object['src'] + '" type="video/mp4">');
+                $node = $('<div>');
+                var $video = $('<video style="position: absolute" muted loop autoplay>');
+                $video[0].onloadeddata = function () {
+                    console.log($video.width());
+                    var aspectFrame = getAspectFrame('fill', frame[2], frame[3], $video.width(), $video.height());
+                    $video
+                        .css('left', aspectFrame[0])
+                        .css('top', aspectFrame[1])
+                        .css('width', aspectFrame[2])
+                        .css('height', aspectFrame[3])
+                };
+                $video.append('<source src="' + object['src'] + '" type="video/mp4">');
+                $node.append($video);
                 break;
 
             case 'link':
