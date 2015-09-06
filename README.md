@@ -15,7 +15,7 @@ Very early. Here's a quick list of what's left to do:
 - ~~Opacity for all objects~~
 - Effects for all objects
 - Unit tests
-- ~~Retina support for Canvas elements (currently only `Text`)~~
+- ~~Retina support~~
 
 #### 💘 Contributions and pull requests welcome!
 
