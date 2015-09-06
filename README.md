@@ -16,3 +16,5 @@ Very early. Here's a quick list of what's left to do:
 - Effects for all objects
 - Unit tests
 - Retina support for Canvas elements (currently only `Text`)
+
+#### 💘 Contributions and pull requests welcome!
