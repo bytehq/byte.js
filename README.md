@@ -18,3 +18,8 @@ Very early. Here's a quick list of what's left to do:
 - ~~Retina support for Canvas elements (currently only `Text`)~~
 
 #### 💘 Contributions and pull requests welcome!
+
+# Acknowledgements
+
+- <a href="https://github.com/jquery/jquery">jQuery</a> for many things
+- <a href="https://github.com/ryansturmer/em.js">em.js</a> to measure text dimensions
