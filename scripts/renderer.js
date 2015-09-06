@@ -171,9 +171,9 @@ var render = function (post) {
             case 'paragraph':
                 frame = [
                     frame[0] + 20,
-                    frame[1] + 20,
+                    frame[1] + 10,
                     frame[2] - 40,
-                    frame[3] - 40
+                    frame[3] - 20
                 ];
 
                 $node = $('<p>');
