@@ -169,12 +169,19 @@ var render = function (post) {
                 break;
 
             case 'paragraph':
+                frame = [
+                    frame[0] + 20,
+                    frame[1] + 20,
+                    frame[2] - 40,
+                    frame[3] - 40
+                ];
+
                 $node = $('<p>');
                 $node.css('font-family', getFontNameForStyle(object['style']));
                 $node.css('font-size', object['size'] || 17);
                 $node.css('color', getColorFromArray(object['color']));
                 $node.css('box-sizing', 'border-box');
-                $node.css('padding', 20);
+                $node.css('text-align', object['alignment'] || 'left');
                 $node.html(object['text'].replace(/(?:\r\n|\r|\n)/g, '<br>'));
                 break;
 
