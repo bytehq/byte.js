@@ -1,3 +1,12 @@
+$.fn.textWidth = function(){
+  var html_org = $(this).html();
+  var html_calc = '<span>' + html_org + '</span>';
+  $(this).html(html_calc);
+  var width = $(this).find('span:first').width();
+  $(this).html(html_org);
+  return width;
+};
+
 var getColorFromArray = function (array, alpha) {
     array = array || [0, 0, 0, 1.0];
     var color = 'rgba(' +   parseInt(array[0] * 255) + ', ' +
@@ -40,19 +49,31 @@ var getAspectFrame = function (type, parentWidth, parentHeight, childWidth, chil
 var getFontNameForStyle = function (style) {
     switch (style) {
         case 'sans':
-            return 'Helvetica';
+            return 'Helvetica, Arial';
             break;
         case 'serif':
-            return 'Georgia';
+            return 'Georgia, Times New Roman';
             break;
         case 'mono':
-            return 'Courier';
+            return 'Roboto';
             break;
         case 'eightbit':
-            return 'Courier';
+            return 'PixelGrotesk';
             break;
         case 'poster':
-            return 'Impact';
+            return 'Pressuru';
+            break;
+        case 'cursive':
+            return 'LeagueScript';
+            break;
+        case 'punchout':
+            return 'Labeler';
+            break;
+        case 'book':
+            return 'st32k';
+            break;
+        case 'tape':
+            return 'Alfphabet IV';
             break;
     }
 
@@ -113,6 +134,9 @@ var render = function (post) {
             case 'text':
                 $node = $('<div>');
 
+                var isBold = object['style'] == 'sans' || object['style'] == 'serif';
+
+                // determine where line breaks should occur
                 var words = object['text'].split(' ');
                 var text = '';
                 var wordCountForCurrentLine = 0;
@@ -130,51 +154,90 @@ var render = function (post) {
                     wordCountForCurrentLine++;
                 });
 
+
+                // this is a bit of a doozy, let's take it step by step:
+                // we lay out every line of text as a separate element, so split on \n
                 var lines = text.split('\n');
 
-                // TODO: no longer using canvas, so we probably don't need to measure with it
-                {
-                    var $canvas = $('<canvas>')
-                    var context = $canvas[0].getContext('2d');
-                    $canvas[0].width = frame[2];
-                    $canvas[0].height = frame[3];
-                    context.font = '100px ' + getFontNameForStyle(object['style']);
-                    context.textAlign = 'center';
-                    context.textBaseline = 'top';
+                // this array will hold each span element that's tied to a line
+                var lineElements = [];
 
-                    var highestLineWidth = 0;
-                    var yOffset = 0;
+                // we use <canvas> for measuring the dimensions of each line
+                var $canvas = $('<canvas>')
+                var context = $canvas[0].getContext('2d');
+                $canvas[0].width = frame[2];
+                $canvas[0].height = frame[3];
+                context.font = (isBold ? 'bold ' : '') + '100px ' + getFontNameForStyle(object['style']);
+                context.textAlign = 'center';
+                context.textBaseline = 'top';
 
-                    lines.forEach(function (line, index) {
-                        var dimensions = context.measureText(line);
-                        if (dimensions.width > highestLineWidth) {
-                            highestLineWidth = dimensions.width;
-                        }
-
-                        yOffset += dimensions.actualBoundingBoxAscent + dimensions.actualBoundingBoxDescent;
-                    });
-
-                    var widthRatio = (frame[2] - 40) / highestLineWidth;
-                    var heightRatio = (frame[3] - 20) / yOffset;
-                    var ratio = Math.min(widthRatio, heightRatio);
-
-                    var fontSize = (100 * ratio);
-                    var estimatedHeight = fontSize * lines.length;
-                }
-
+                // set up the initial <span> elements
                 lines.forEach(function (line, index) {
                     var $line = $('<span>' + line + '</span>');
-                    $line.css('display', 'inline-block');
                     $line.css('text-align', 'center');
                     $line.css('white-space', 'nowrap');
                     $line.css('position', 'absolute');
                     $line.css('font-family', getFontNameForStyle(object['style']));
-                    $line.css('font-size', fontSize);
-                    $line.css('width', frame[2]);
-                    $line.css('top', (frame[3] / 2 - estimatedHeight / 2) + index * fontSize);
+
+                    // use a baseline font size of 100; we'll scale up or down from here to fit the bounding box later
+                    $line.css('font-size', 100);
                     $line.css('color', getColorFromArray(object['color']));
+                    if (isBold) {
+                        $line.css('font-weight', 600);
+                    }
+
+                    lineElements.push($line);
                     $node.append($line);
                 });
+                
+                // TODO: Remove these nasty timeouts and use actual event listener for font loading
+                setTimeout(function () {
+
+                    // we need to determine the width and height of the sum of all the lines
+                    var highestLineWidth = 0;
+                    var height = 0;
+
+                    lineElements.forEach(function ($line, index) {
+                        var dimensions = context.measureText($line.text());
+                        if (dimensions.width > highestLineWidth) {
+                            highestLineWidth = dimensions.width;
+                        }
+
+                        height += dimensions.actualBoundingBoxAscent + dimensions.actualBoundingBoxDescent;
+                    });
+
+                    // determine a scaling ratio based on the bounding box and the sum width/height
+                    var widthRatio = (frame[2] - 40) / highestLineWidth;
+                    var heightRatio = (frame[3] - 20) / height;
+                    var ratio = Math.min(widthRatio, heightRatio);
+
+
+                    // scale the font size of each line element by the ratio
+                    lineElements.forEach(function ($line, index) {
+                        $line.css('display', 'inline-block');
+                        $line.css('width', frame[2]);
+                        $line.css('font-size', 100 * ratio);
+                    });
+
+                    setTimeout(function () {
+                        // do another pass and determine the NEW width/heights of the lines
+                        // now that they have been resized
+                        var offsets = [];
+                        height = 0;
+                        lineElements.forEach(function ($line, index) {
+                            context.font = context.font.replace('100px', parseInt(100 * ratio) + 'px');
+                            var dimensions = context.measureText($line.text());
+                            offsets.push(height);
+                            height += dimensions.actualBoundingBoxAscent + dimensions.actualBoundingBoxDescent;
+                        });
+
+                        // vertically position the lines
+                        lineElements.forEach(function ($line, index) {
+                            $line.css('top', (frame[3] / 2) - (height / 2) + offsets[index]);
+                        });
+                    }, 0);
+                }, 1000);
+
                 break;
 
             case 'paragraph':
@@ -270,6 +333,8 @@ var render = function (post) {
                 $node.css('opacity', opacity);
             }
 
+            // leaving this comented for a while because it's useful to turn on for visual debugging
+            // $node.css('background-color', 'rgba(255, 0, 0, 0.25)');
             $rootNode.append($node);
         }
 

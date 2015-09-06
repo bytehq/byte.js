@@ -2,23 +2,42 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="scripts/textmetrics.js"></script>
-
-    <script src="scripts/renderer.js"></script>
-    <script>
-        $(function () {
-            $.getJSON('test.json', function (data) {
-                for (var i = 0; i < 50; i++) {
-                    var post = data['data']['posts'][i];
-                    var $post = $('<div class="post">');
-                    $post.append('<a href="byte://' + post['name'] + '">byte://' + post['name'] + '</a>');
-                    var $byte = ByteRenderer.render(post);
-                    $($post).append($byte);
-                    $('body').append($post);
-                }
-            });
-        });
-    </script>
     <style>
+        @font-face {
+            font-family: 'Alfphabet IV';
+            src: url('fonts/Alfphabet-IV.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Labeler';
+            src: url('fonts/Labeler-Regular.otf') format('opentype');
+        }
+
+        @font-face {
+            font-family: 'LeagueScript';
+            src: url('fonts/LeagueScript.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'PixelGrotesk';
+            src: url('fonts/PixelGrotesk-Regular.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Pressuru';
+            src: url('fonts/pressuru.otf') format('opentype');
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            src: url('fonts/RobotoMono-Regular.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'st32k';
+            src: url('fonts/st32k.ttf') format('st32k');
+        }
+
         div.post {
             margin: 20px auto;
             width: 324px;
@@ -40,6 +59,22 @@
             user-select: none;
         }
     </style>
+
+    <script src="scripts/renderer.js"></script>
+    <script>
+        $(function () {
+            $.getJSON('test.json', function (data) {
+                    for (var i = 0; i < 50; i++) {
+                    var post = data['data']['posts'][i];
+                    var $post = $('<div class="post">');
+                    $post.append('<a href="byte://' + post['name'] + '">byte://' + post['name'] + '</a>');
+                    var $byte = ByteRenderer.render(post);
+                    $($post).append($byte);
+                    $('body').append($post);
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 </body>
