@@ -189,7 +189,6 @@ var render = function (post) {
                 $node = $('<div>');
                 var $video = $('<video style="position: absolute" muted loop autoplay>');
                 $video[0].onloadeddata = function () {
-                    console.log($video.width());
                     var aspectFrame = getAspectFrame('fill', frame[2], frame[3], $video.width(), $video.height());
                     $video
                         .css('left', aspectFrame[0])
