@@ -79,7 +79,7 @@ var render = function (post) {
         var transform = object['transform'];
         var opacity = object['opacity'];
 
-        switch (object['type']) {
+        switch (object['type'].toLowerCase()) {
             case 'graphic':
                 $node = $('<div>');
                 var $image = $('<img style="position: absolute;" src="' + object['src'] + '">');
