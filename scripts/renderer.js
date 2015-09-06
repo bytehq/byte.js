@@ -195,7 +195,7 @@ var render = function (post) {
                 ];
 
                 $node = $('<a style="display: block" href="' + object['url'] + '">' + object['title'] + '</a>');
-                $node.css('border', '3px solid ' + getColorFromArray(object['color']));
+                $node.css('border', '2px solid ' + getColorFromArray(object['color']));
                 $node.css('color', getColorFromArray(object['color']));
                 $node.css('box-sizing', 'border-box');
                 $node.css('border-radius', 6);
