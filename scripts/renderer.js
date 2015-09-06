@@ -1,67 +1,67 @@
+var getColorFromArray = function (array, alpha) {
+    array = array || [0, 0, 0, 1.0];
+    var color = 'rgba(' +   parseInt(array[0] * 255) + ', ' +
+                            parseInt(array[1] * 255) + ', ' +
+                            parseInt(array[2] * 255) + ', ' +
+                            (alpha || (array[3])) + ')';
+    return color;
+};
+
+var getAspectFrame = function (type, parentWidth, parentHeight, childWidth, childHeight) {
+    var parentAspect = parentWidth / parentHeight;
+    var childAspect = childWidth / childHeight;
+    var ratio;
+
+    if (type == 'fill') {
+        if (parentAspect > childAspect) {
+            ratio = parentWidth / childWidth;
+        } else {
+            ratio = parentHeight / childHeight;
+        }
+    } else {
+        if (parentAspect > childAspect) {
+            ratio = parentHeight / childHeight;
+        } else {
+            ratio = parentWidth / childWidth;
+        }
+    }
+
+    var targetW = childWidth * ratio;
+    var targetH = childHeight * ratio;
+
+    return [
+        parentWidth / 2 - targetW / 2,
+        parentHeight / 2 - targetH / 2,
+        targetW,
+        targetH
+    ];
+};
+
+var getFontNameForStyle = function (style) {
+    switch (style) {
+        case 'sans':
+            return 'Helvetica';
+            break;
+        case 'serif':
+            return 'Georgia';
+            break;
+        case 'mono':
+            return 'Courier';
+            break;
+        case 'eightbit':
+            return 'Courier';
+            break;
+        case 'poster':
+            return 'Impact';
+            break;
+    }
+
+    return 'Helvetica';
+};
+
 var render = function (post) {
     var bff = post['package'];
     var objects = bff['objects'];
-
-    var getColorFromArray = function (array, alpha) {
-        array = array || [0, 0, 0, 1.0];
-        var color = 'rgba(' +   parseInt(array[0] * 255) + ', ' +
-                                parseInt(array[1] * 255) + ', ' +
-                                parseInt(array[2] * 255) + ', ' +
-                                (alpha || (array[3])) + ')';
-        return color;
-    }
-
-    var getAspectFrame = function (type, parentWidth, parentHeight, childWidth, childHeight) {
-        var parentAspect = parentWidth / parentHeight;
-        var childAspect = childWidth / childHeight;
-        var ratio;
-
-        if (type == 'fill') {
-            if (parentAspect > childAspect) {
-                ratio = parentWidth / childWidth;
-            } else {
-                ratio = parentHeight / childHeight;
-            }
-        } else {
-            if (parentAspect > childAspect) {
-                ratio = parentHeight / childHeight;
-            } else {
-                ratio = parentWidth / childWidth;
-            }
-        }
-
-        var targetW = childWidth * ratio;
-        var targetH = childHeight * ratio;
-
-        return [
-            parentWidth / 2 - targetW / 2,
-            parentHeight / 2 - targetH / 2,
-            targetW,
-            targetH
-        ];
-    }
-
-    var getFontNameForStyle = function (style) {
-        switch (style) {
-            case 'sans':
-                return 'Helvetica';
-                break;
-            case 'serif':
-                return 'Georgia';
-                break;
-            case 'mono':
-                return 'Courier';
-                break;
-            case 'eightbit':
-                return 'Courier';
-                break;
-            case 'poster':
-                return 'Impact';
-                break;
-        }
-
-        return 'Helvetica';
-    }
 
     var bg = bff['background'];
     var $rootNode = $('<div class="byte" style="background: linear-gradient(' + getColorFromArray(bg[0]) + ', ' + getColorFromArray(bg[1]) + ')">');
@@ -265,7 +265,7 @@ var render = function (post) {
     });
 
     return $rootNode;
-}
+};
 
 window.ByteRenderer = {
     render: render
