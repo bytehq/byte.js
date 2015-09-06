@@ -132,40 +132,49 @@ var render = function (post) {
 
                 var lines = text.split('\n');
 
-                var $canvas = $('<canvas>')
-                var context = $canvas[0].getContext('2d');
-                $canvas[0].width = frame[2];
-                $canvas[0].height = frame[3];
-                context.font = '100px ' + getFontNameForStyle(object['style']);
-                context.textAlign = 'center';
-                context.textBaseline = 'top';
-                context.fillStyle = getColorFromArray(object['color']);
+                // TODO: no longer using canvas, so we probably don't need to measure with it
+                {
+                    var $canvas = $('<canvas>')
+                    var context = $canvas[0].getContext('2d');
+                    $canvas[0].width = frame[2];
+                    $canvas[0].height = frame[3];
+                    context.font = '100px ' + getFontNameForStyle(object['style']);
+                    context.textAlign = 'center';
+                    context.textBaseline = 'top';
 
-                var highestLineWidth = 0;
-                var yOffset = 0;
+                    var highestLineWidth = 0;
+                    var yOffset = 0;
+
+                    lines.forEach(function (line, index) {
+                        var dimensions = context.measureText(line);
+                        if (dimensions.width > highestLineWidth) {
+                            highestLineWidth = dimensions.width;
+                        }
+
+                        yOffset += dimensions.actualBoundingBoxAscent + dimensions.actualBoundingBoxDescent;
+                    });
+
+                    var widthRatio = (frame[2] - 40) / highestLineWidth;
+                    var heightRatio = (frame[3] - 20) / yOffset;
+                    var ratio = Math.min(widthRatio, heightRatio);
+
+                    var fontSize = (100 * ratio);
+                    var estimatedHeight = fontSize * lines.length;
+                }
 
                 lines.forEach(function (line, index) {
-                    var dimensions = context.measureText(line);
-                    if (dimensions.width > highestLineWidth) {
-                        highestLineWidth = dimensions.width;
-                    }
-
-                    yOffset += dimensions.actualBoundingBoxAscent + dimensions.actualBoundingBoxDescent;
+                    var $line = $('<span>' + line + '</span>');
+                    $line.css('display', 'inline-block');
+                    $line.css('text-align', 'center');
+                    $line.css('white-space', 'nowrap');
+                    $line.css('position', 'absolute');
+                    $line.css('font-family', getFontNameForStyle(object['style']));
+                    $line.css('font-size', fontSize);
+                    $line.css('width', frame[2]);
+                    $line.css('top', (frame[3] / 2 - estimatedHeight / 2) + index * fontSize);
+                    $line.css('color', getColorFromArray(object['color']));
+                    $node.append($line);
                 });
-
-                var widthRatio = (frame[2] - 40) / highestLineWidth;
-                var heightRatio = (frame[3] - 20) / yOffset;
-                var ratio = Math.min(widthRatio, heightRatio);
-
-                var fontSize = (100 * ratio);
-                var estimatedHeight = fontSize * lines.length;
-                context.font = fontSize + 'px ' + getFontNameForStyle(object['style']);
-
-                lines.forEach(function (line, index) {
-                    context.fillText(line, frame[2] / 2, (frame[3] / 2 - estimatedHeight / 2) + index * fontSize);
-                });
-
-                $node.append($canvas);
                 break;
 
             case 'paragraph':
