@@ -111,7 +111,6 @@ var render = function (post) {
                 break;
 
             case 'text':
-                console.log(object);
                 $node = $('<div>');
 
                 var words = object['text'].split(' ');
