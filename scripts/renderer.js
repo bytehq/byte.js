@@ -183,7 +183,7 @@ var render = function (post) {
                 $node.css('color', getColorFromArray(object['color']));
                 $node.css('box-sizing', 'border-box');
                 $node.css('text-align', object['alignment'] || 'left');
-                $node.html(object['text'].replace(/(?:\r\n|\r|\n)/g, '<br>'));
+                $node.css('white-space', 'pre-wrap');
                 break;
 
             case 'video':
