@@ -23,4 +23,7 @@ Very early. Here's a quick list of what's left to do:
 # Acknowledgements
 
 - <a href="https://github.com/jquery/jquery">jQuery</a> for many things
+- <a href="http://www.fontsquirrel.com">Font Squirrel</a> for incredibly easy Base64 Webfont CSS
+- <a href="https://github.com/typekit/webfontloader">Web Font Loader</a> for font load events
 - <a href="https://github.com/ryansturmer/em.js">em.js</a> to measure text dimensions
+
