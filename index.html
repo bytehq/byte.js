@@ -87,32 +87,15 @@
                 var data = TEST_DATA;
                 for (var i = 0; i < 20; i++) {
                     var post = data['data']['posts'][i];
-                    console.log(post);
-                    // var $post = $('<div class="post">');
-                    // $post.append('<a href="byte://' + post['name'] + '">byte://' + post['name'] + '</a>');
                     var $byte = ByteRenderer.render(post);
                     var $browser = $('<div class="byte-browser">');
-                    // $browser.append($('<h1>' + (post['caption'] || post['name']) + '</h1>'));
                     $browser.append('<fieldset><div class="address-bar" contenteditable><span>' + (post['caption'] || post['name']) + '</span> \u2014 byte://' + post['name'] + '</div></fieldset>');
                     $('body').append($browser);
                     $browser.append($byte);
-
-
-
-                    // $('.byte-browser').prepend($byte);
-                    // // $('body').append($post);
                 }
             }
         });
     </script>
 </head>
 <body>
-
-    <!-- <div class="byte-browser">
-        <h1>Million Dollar Byte Page</h1>
-        <fieldset>
-            <input value="byte://milliondollarbytepage" placeholder="Enter a Byte URL">
-        </fieldset>
-    </div> -->
-
 </body>
