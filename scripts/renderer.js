@@ -1,3 +1,80 @@
+var animator;
+
+var tick = function () {
+    animator.forEach(function (animatorInstance, index) {
+        animatorInstance.timeOffset += 1;
+        var $element = animatorInstance.element;
+
+        if (animatorInstance.data.shouldResetTransformOrigin) {
+            $element.css('transform-origin', '50% 50%');
+        }
+
+        var transforms = [];
+
+        if (animatorInstance.animations.indexOf('rotate') != -1) {
+            var speed = .01;
+            var f = animatorInstance.timeOffset * speed;
+            transforms.push('rotate(' + f + 'rad)')
+        }
+
+        if (animatorInstance.animations.indexOf('cos') != -1) {
+            var distance = 30;
+            var speed = 0.1;
+            var f = Math.sin(animatorInstance.timeOffset * speed) * distance;
+            transforms.push('translate(' + f + 'px, 0)');
+        }
+
+        if (animatorInstance.animations.indexOf('sin') != -1) {
+            var distance = 30;
+            var speed = 0.1;
+            var f = Math.sin(animatorInstance.timeOffset * speed) * distance;
+
+            transforms.push('translate(0, ' + f + 'px)');
+        }
+
+        if (animatorInstance.animations.indexOf('wave') != -1) {
+            var distance = 0.75;
+            var speed = .05;
+            var f = Math.sin(animatorInstance.timeOffset * speed) * distance;
+
+            $element.css('transform-origin', '50% 100%');
+            animatorInstance.data.shouldResetTransformOrigin = true;
+            transforms.push('rotate(' + f + 'rad)')
+        }
+
+        if (animatorInstance.animations.indexOf('soon') != -1) {
+            var scale = 1.0;
+            var scaleMax = 6.0;
+            var counterMax = 200;
+            var offset = animatorInstance.timeOffset % counterMax;
+            var amt = scaleMax - scale;
+            var scale = scaleMax - (amt - (amt * offset / counterMax));
+
+            transforms.push('scale(' + scale + ', ' + scale + ')');
+        }
+
+        if (transforms.length > 0) {
+            $element.css('transform', transforms.join(' '));
+        }
+    });
+
+    window.requestAnimationFrame(tick);
+};
+
+var addAnimation = function ($element, animations, data) {
+    if (!animator) {
+        animator = [];
+        window.requestAnimationFrame(tick);
+    }
+
+    animator.push({
+        element: $element,
+        animations: animations,
+        timeOffset: 0,
+        data: data || {}
+    });
+};
+
 var getColorFromArray = function (array, alpha) {
     array = array || [0, 0, 0, 1.0];
     var color = 'rgba(' +   parseInt(array[0] * 255) + ', ' +
@@ -90,6 +167,7 @@ var render = function (post) {
         var frame = object['frame'];
         var transform = object['transform'];
         var opacity = object['opacity'];
+        var effects = object['effects'];
 
         switch (object['type'].toLowerCase()) {
             case 'graphic':
@@ -312,10 +390,12 @@ var render = function (post) {
             $node
                 .css('overflow', 'hidden')
                 .css('position', 'absolute')
-                .css('left', frame[0])
-                .css('top', frame[1])
-                .css('width', frame[2])
-                .css('height', frame[3]);
+                .css('width', '100%')
+                .css('height', '100%')
+                // .css('left', frame[0])
+                // .css('top', frame[1])
+                // .css('width', frame[2])
+                // .css('height', frame[3]);
 
             if (transform) {
                 var transformString = [
@@ -333,9 +413,21 @@ var render = function (post) {
                 $node.css('opacity', opacity);
             }
 
+            var $wrapper = $('<div class="wrapper" style="position: absolute;">');
+            $wrapper
+                .css('left', frame[0])
+                .css('top', frame[1])
+                .css('width', frame[2])
+                .css('height', frame[3]);
+
+            $wrapper.append($node);
+            if (effects && effects.length > 0) {
+                addAnimation($wrapper, effects);
+            }
+
             // leaving this comented for a while because it's useful to turn on for visual debugging
             // $node.css('background-color', 'rgba(255, 0, 0, 0.25)');
-            $rootNode.append($node);
+            $rootNode.append($wrapper);
         }
 
     });

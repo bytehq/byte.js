@@ -10,8 +10,8 @@ Very early. Here's a quick list of what's left to do:
 
 - `Music` object
 - Sound on `Video` objects
-- Effects
 - Unit tests
+- ~~Effects~~
 - ~~Color fills on `Graphic` objects~~
 - ~~Text wrapping on Links~~
 - ~~Retina support~~
@@ -26,4 +26,3 @@ Very early. Here's a quick list of what's left to do:
 - <a href="http://www.fontsquirrel.com">Font Squirrel</a> for incredibly easy Base64 Webfont CSS
 - <a href="https://github.com/typekit/webfontloader">Web Font Loader</a> for font load events
 - <a href="https://github.com/ryansturmer/em.js">em.js</a> to measure text dimensions
-
