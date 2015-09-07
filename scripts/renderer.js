@@ -1,3 +1,5 @@
+window.ByteRenderer = {};
+
 var animator;
 
 var tick = function () {
@@ -352,7 +354,14 @@ var render = function (post) {
                     frame[3] - 10
                 ];
 
-                var $link = $('<a style="display: block" href="' + object['url'] + '">' + object['title'] + '</a>');
+                var url = object['url'];
+                if (ByteRenderer.settings.urlMode == 'http') {
+                    if (object['url'].indexOf('byte://') != -1) {
+                        url = ByteRenderer.settings.urlPrefix + object['url'].replace('byte://', '').replace('#', '*#');
+                    }
+                }
+
+                var $link = $('<a style="display: block" href="' + url + '">' + object['title'] + '</a>');
                 $link.css('border', '2px solid ' + getColorFromArray(object['color']));
                 $link.css('color', getColorFromArray(object['color']));
                 $link.css('box-sizing', 'border-box');
@@ -388,10 +397,6 @@ var render = function (post) {
                 .css('position', 'absolute')
                 .css('width', '100%')
                 .css('height', '100%')
-                // .css('left', frame[0])
-                // .css('top', frame[1])
-                // .css('width', frame[2])
-                // .css('height', frame[3]);
 
             if (transform) {
                 var transformString = [
@@ -421,8 +426,10 @@ var render = function (post) {
                 addAnimation($wrapper, effects);
             }
 
-            // leaving this comented for a while because it's useful to turn on for visual debugging
-            // $node.css('background-color', 'rgba(255, 0, 0, 0.25)');
+            if (window.ByteRenderer.debug) {
+                $node.css('background-color', 'rgba(255, 0, 0, 0.25)');
+            }
+
             $rootNode.append($wrapper);
         }
 
@@ -431,6 +438,10 @@ var render = function (post) {
     return $rootNode;
 };
 
-window.ByteRenderer = {
-    render: render
+window.ByteRenderer.render = render;
+window.ByteRenderer.debug = false;
+window.ByteRenderer.settings = {
+    soundMode: 'never',
+    urlMode: 'http',
+    urlPrefix: 'http://byte.co/~'
 };

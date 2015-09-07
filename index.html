@@ -5,15 +5,63 @@
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
     <script src="scripts/textmetrics.js"></script>
     <style>
-        div.post {
-            margin: 20px auto;
-            width: 324px;
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            -webkit-appearance: none;
+            border: none;
+            outline: none;
         }
 
-        div.byte {
-            margin: 0 auto;
-            border-radius: 6px;
+        body {
+            margin: 50px auto 30px auto;
+        }
+
+        div.byte-browser {
+            width: 324px;
+            margin: 0 auto 20px auto;
             box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        div.byte-browser h1 {
+            text-align: center;
+            font-family: 'Helvetica Neue', Arial, sans-serif;;
+            font-size: 12px;
+            padding: 10px 10px 10px 10px;
+            font-weight: 500;
+            color: rgba(38, 38, 38, 1.0);
+        }
+
+        div.byte-browser fieldset {
+            display: block;
+            padding: 10px 10px 10px 10px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        div.byte-browser div.address-bar {
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 12px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            display: block;
+            width: 100%;
+            padding: 5px;
+            border-radius: 6px;
+            color: rgba(0, 0, 0, 0.3);
+            font-weight: 400;
+            text-align: center;
+        }
+
+        div.byte-browser div.address-bar:focus {
+            border: 2px solid rgba(0, 0, 0, 0.25);
+        }
+
+        div.byte-browser div.address-bar span {
+            font-weight: 500;
+            color: rgba(38, 38, 38, 1.0);
         }
 
         div.node {
@@ -39,15 +87,32 @@
                 var data = TEST_DATA;
                 for (var i = 0; i < 20; i++) {
                     var post = data['data']['posts'][i];
-                    var $post = $('<div class="post">');
-                    $post.append('<a href="byte://' + post['name'] + '">byte://' + post['name'] + '</a>');
+                    console.log(post);
+                    // var $post = $('<div class="post">');
+                    // $post.append('<a href="byte://' + post['name'] + '">byte://' + post['name'] + '</a>');
                     var $byte = ByteRenderer.render(post);
-                    $($post).append($byte);
-                    $('body').append($post);
+                    var $browser = $('<div class="byte-browser">');
+                    // $browser.append($('<h1>' + (post['caption'] || post['name']) + '</h1>'));
+                    $browser.append('<fieldset><div class="address-bar" contenteditable><span>' + (post['caption'] || post['name']) + '</span> \u2014 byte://' + post['name'] + '</div></fieldset>');
+                    $('body').append($browser);
+                    $browser.append($byte);
+
+
+
+                    // $('.byte-browser').prepend($byte);
+                    // // $('body').append($post);
                 }
             }
         });
     </script>
 </head>
 <body>
+
+    <!-- <div class="byte-browser">
+        <h1>Million Dollar Byte Page</h1>
+        <fieldset>
+            <input value="byte://milliondollarbytepage" placeholder="Enter a Byte URL">
+        </fieldset>
+    </div> -->
+
 </body>
