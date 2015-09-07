@@ -103,16 +103,22 @@ var render = function (post) {
         switch (object['type'].toLowerCase()) {
             case 'graphic':
                 $node = $('<div>');
-                var $image = $('<img style="position: absolute;" src="' + object['src'] + '">');
-                $image.load(function () {
-                    var aspectFrame = getAspectFrame(object['scaleMode'] || 'fit', frame[2], frame[3], $image.width(), $image.height());
+                var $image = $('<div style="position: absolute;">');
+                $image.css('background', getColorFromArray(object['color']));
+                $image.css('-webkit-mask-image', 'url(' + object['src']  + ')');
+                $image.css('-webkit-mask-size', '100% 100%');
+                var $imgPlaceholder = $('<img style="position: absolute;" src="' + object['src'] + '">');
+                $imgPlaceholder.load(function () {
+                    var aspectFrame = getAspectFrame(object['scaleMode'] || 'fit', frame[2], frame[3], $imgPlaceholder.width(), $imgPlaceholder.height());
                     $image
                         .css('left', aspectFrame[0])
                         .css('top', aspectFrame[1])
                         .css('width', aspectFrame[2])
-                        .css('height', aspectFrame[3])
+                        .css('height', aspectFrame[3]);
+                    $imgPlaceholder.remove();
                 });
                 $node.append($image);
+                $node.append($imgPlaceholder);
                 break;
 
             case 'image':
