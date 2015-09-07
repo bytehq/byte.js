@@ -162,7 +162,6 @@ var render = function (post) {
         .css('position', 'relative');
 
     objects.forEach(function (object, index) {
-
         var $node;
         var frame = object['frame'];
         var transform = object['transform'];
@@ -265,50 +264,47 @@ var render = function (post) {
                     $node.append($line);
                 });
 
-                // TODO: Remove these nasty timeouts and use actual event listener for font loading
-                    // we need to determine the width and height of the sum of all the lines
-                    var highestLineWidth = 0;
-                    var height = 0;
+                // we need to determine the width and height of the sum of all the lines
+                var highestLineWidth = 0;
+                var height = 0;
 
-                    lineElements.forEach(function ($line, index) {
-                        var dimensions = context.measureText($line.text());
-                        if (dimensions.width > highestLineWidth) {
-                            highestLineWidth = dimensions.width;
-                        }
+                lineElements.forEach(function ($line, index) {
+                    var dimensions = context.measureText($line.text());
+                    if (dimensions.width > highestLineWidth) {
+                        highestLineWidth = dimensions.width;
+                    }
 
-                        height += dimensions.actualBoundingBoxAscent + dimensions.actualBoundingBoxDescent;
-                    });
+                    height += dimensions.actualBoundingBoxAscent + dimensions.actualBoundingBoxDescent;
+                });
 
-                    // determine a scaling ratio based on the bounding box and the sum width/height
-                    var widthRatio = (frame[2] - 40) / highestLineWidth;
-                    var heightRatio = (frame[3] - 20) / height;
-                    var ratio = Math.min(widthRatio, heightRatio);
+                // determine a scaling ratio based on the bounding box and the sum width/height
+                var widthRatio = (frame[2] - 40) / highestLineWidth;
+                var heightRatio = (frame[3] - 20) / height;
+                var ratio = Math.min(widthRatio, heightRatio);
 
 
-                    // scale the font size of each line element by the ratio
-                    lineElements.forEach(function ($line, index) {
-                        $line.css('display', 'inline-block');
-                        $line.css('width', frame[2]);
-                        $line.css('font-size', 100 * ratio);
-                    });
+                // scale the font size of each line element by the ratio
+                lineElements.forEach(function ($line, index) {
+                    $line.css('display', 'inline-block');
+                    $line.css('width', frame[2]);
+                    $line.css('font-size', 100 * ratio);
+                });
 
-                    // setTimeout(function () {
-                        // do another pass and determine the NEW width/heights of the lines
-                        // now that they have been resized
-                        var offsets = [];
-                        height = 0;
-                        lineElements.forEach(function ($line, index) {
-                            context.font = context.font.replace('100px', parseInt(100 * ratio) + 'px');
-                            var dimensions = context.measureText($line.text());
-                            offsets.push(height);
-                            height += dimensions.actualBoundingBoxAscent + dimensions.actualBoundingBoxDescent;
-                        });
+                // do another pass and determine the NEW width/heights of the lines
+                // now that they have been resized
+                var offsets = [];
+                height = 0;
+                lineElements.forEach(function ($line, index) {
+                    context.font = context.font.replace('100px', parseInt(100 * ratio) + 'px');
+                    var dimensions = context.measureText($line.text());
+                    offsets.push(height);
+                    height += dimensions.actualBoundingBoxAscent + dimensions.actualBoundingBoxDescent;
+                });
 
-                        // vertically position the lines
-                        lineElements.forEach(function ($line, index) {
-                            $line.css('top', (frame[3] / 2) - (height / 2) + offsets[index]);
-                        });
-                    // }, 0);
+                // vertically position the lines
+                lineElements.forEach(function ($line, index) {
+                    $line.css('top', (frame[3] / 2) - (height / 2) + offsets[index]);
+                });
 
                 break;
 
