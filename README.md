@@ -4,6 +4,8 @@ Byte rendering implemented in Javascript, HTML, CSS, and a bit of Canvas.
 
 ![](http://i.imgur.com/cHhpGWj.gif)
 
+[Live Demo](http://bytehq.github.io/byte.js)
+
 ### Status
 
 Very early. Here's a quick list of what's left to do:
