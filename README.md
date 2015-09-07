@@ -18,7 +18,7 @@ Very early. Here's a quick list of what's left to do:
 - ~~Text rendering for `Text` and `Paragraph` is missing several fonts and behaves oddly in certain scenarios~~
 - ~~Opacity for all objects~~
 
-#### Contributions and pull requests welcome!
+#### 💘 Contributions and pull requests welcome!
 
 # Acknowledgements
 
