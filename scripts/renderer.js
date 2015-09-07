@@ -197,8 +197,6 @@ var render = function (post) {
                 });
 
                 // TODO: Remove these nasty timeouts and use actual event listener for font loading
-                setTimeout(function () {
-
                     // we need to determine the width and height of the sum of all the lines
                     var highestLineWidth = 0;
                     var height = 0;
@@ -225,7 +223,7 @@ var render = function (post) {
                         $line.css('font-size', 100 * ratio);
                     });
 
-                    setTimeout(function () {
+                    // setTimeout(function () {
                         // do another pass and determine the NEW width/heights of the lines
                         // now that they have been resized
                         var offsets = [];
@@ -241,8 +239,7 @@ var render = function (post) {
                         lineElements.forEach(function ($line, index) {
                             $line.css('top', (frame[3] / 2) - (height / 2) + offsets[index]);
                         });
-                    }, 0);
-                }, 1000);
+                    // }, 0);
 
                 break;
 

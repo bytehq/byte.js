@@ -1,0 +1,34 @@
+@font-face {
+    font-family: 'Alfphabet IV';
+    src: url('fonts/Alfphabet-IV.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Labeler';
+    src: url('fonts/Labeler-Regular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'LeagueScript';
+    src: url('fonts/LeagueScript.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'PixelGrotesk';
+    src: url('fonts/PixelGrotesk-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Pressuru';
+    src: url('fonts/pressuru.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('fonts/RobotoMono-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'st32k';
+    src: url('fonts/st32k.ttf') format('st32k');
+}
