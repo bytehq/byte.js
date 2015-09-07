@@ -195,7 +195,7 @@ var render = function (post) {
                     lineElements.push($line);
                     $node.append($line);
                 });
-                
+
                 // TODO: Remove these nasty timeouts and use actual event listener for font loading
                 setTimeout(function () {
 
@@ -264,7 +264,7 @@ var render = function (post) {
                 $node.css('text-align', object['alignment'] || 'left');
                 $node.css('white-space', 'pre-wrap');
                 $node.text(object['text']);
-                
+
                 break;
 
             case 'video':
@@ -283,7 +283,6 @@ var render = function (post) {
                 break;
 
             case 'link':
-
                 frame = [
                     frame[0] + 5,
                     frame[1] + 5,
@@ -291,24 +290,31 @@ var render = function (post) {
                     frame[3] - 10
                 ];
 
-                $node = $('<a style="display: block" href="' + object['url'] + '">' + object['title'] + '</a>');
-                $node.css('border', '2px solid ' + getColorFromArray(object['color']));
-                $node.css('color', getColorFromArray(object['color']));
-                $node.css('box-sizing', 'border-box');
-                $node.css('border-radius', 6);
-                $node.css('text-align', 'center');
-                $node.css('text-decoration', 'none');
-                $node.css('line-height', (frame[3] - 3) + 'px');
-                $node.css('font-family', 'Helvetica');
-                $node.css('font-weight', 600);
+                var $link = $('<a style="display: block" href="' + object['url'] + '">' + object['title'] + '</a>');
+                $link.css('border', '2px solid ' + getColorFromArray(object['color']));
+                $link.css('color', getColorFromArray(object['color']));
+                $link.css('box-sizing', 'border-box');
+                $link.css('border-radius', 6);
+                $link.css('text-align', 'center');
+                $link.css('text-decoration', 'none');
+                $link.css('display', 'table-cell');
+                $link.css('vertical-align', 'middle');
+                $link.css('width', '100%');
+                $link.css('height', '100%');
+                $link.css('padding', '0 5px');
+                $link.css('font-family', 'Helvetica');
+                $link.css('font-weight', 600);
 
-                $node.mouseover(function () {
-                    $node.css('background', getColorFromArray(object['color'], 0.5));
+                $link.mouseover(function () {
+                    $link.css('background', getColorFromArray(object['color'], 0.5));
                 });
 
-                $node.mouseout(function () {
-                    $node.css('background', 'none');
+                $link.mouseout(function () {
+                    $link.css('background', 'none');
                 });
+
+                $node = $('<div style="display: table">');
+                $node.append($link);
                 break;
         }
 
