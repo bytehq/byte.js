@@ -355,13 +355,20 @@ var render = function (post) {
                 ];
 
                 var url = object['url'];
+                var isByteUrl = false;
                 if (ByteRenderer.settings.urlMode == 'http') {
                     if (object['url'].indexOf('byte://') != -1) {
-                        url = ByteRenderer.settings.urlPrefix + object['url'].replace('byte://', '').replace('#', '*#');
+                        isByteUrl = true;
+                        var isNamed = object['url'].indexOf('byte://byte.') == -1;
+                        if (isNamed) {
+                            url = ByteRenderer.settings.urlPrefix + ByteRenderer.settings.urlNameStub + object['url'].replace('byte://', '').replace('#', '*#') + ByteRenderer.settings.urlSuffix;
+                        } else {
+                            url = ByteRenderer.settings.urlPrefix + ByteRenderer.settings.urlIdStub + object['url'].replace('byte://byte.', '') + ByteRenderer.settings.urlSuffix;
+                        }
                     }
                 }
 
-                var $link = $('<a style="display: block" href="' + url + '">' + object['title'] + '</a>');
+                var $link = $('<a target="' + (isByteUrl ? '_self' : '_parent') + '" style="display: block" href="' + url + '">' + object['title'] + '</a>');
                 $link.css('border', '2px solid ' + getColorFromArray(object['color']));
                 $link.css('color', getColorFromArray(object['color']));
                 $link.css('box-sizing', 'border-box');
@@ -375,6 +382,7 @@ var render = function (post) {
                 $link.css('padding', '0 5px');
                 $link.css('font-family', 'Helvetica');
                 $link.css('font-weight', 600);
+                $link.css('white-space', 'pre-wrap');
 
                 $link.mouseover(function () {
                     $link.css('background', getColorFromArray(object['color'], 0.5));
@@ -443,5 +451,8 @@ window.ByteRenderer.debug = false;
 window.ByteRenderer.settings = {
     soundMode: 'never',
     urlMode: 'http',
-    urlPrefix: 'http://byte.co/~'
+    urlPrefix: 'http://byte.co/',
+    urlSuffix: '',
+    urlNameStub: '~',
+    urlIdStub: 'b/'
 };
