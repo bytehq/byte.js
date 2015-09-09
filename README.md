@@ -8,17 +8,22 @@ Byte rendering implemented in Javascript, HTML, CSS, and a bit of Canvas.
 
 ### Status
 
-Very early. Here's a quick list of what's left to do:
+Very early, but this is what we use live on [byte.co](http://byte.co). 
+
+Here's a quick list of what's left to do:
 
 - `Music` object
 - Sound on `Video` objects
+- `"fireworks"` motion effect
 - Unit tests
-- ~~Effects~~
-- ~~Color fills on `Graphic` objects~~
-- ~~Text wrapping on Links~~
-- ~~Retina support~~
-- ~~Text rendering for `Text` and `Paragraph` is missing several fonts and behaves oddly in certain scenarios~~
-- ~~Opacity for all objects~~
+
+And some things that could be improved:
+
+- Text rendering is not 1:1 with the iOS and OS X clients. Namely:
+  - The `Text` object has different word wrap rules when `word-wrap` is set to `auto`
+  - Scaling of `Text` objects behaves differently in some scenarios (usually when clamped vertically)
+  - The `Paragraph` object has slightly different vertical align and line height behavior
+- `Link` objects have slightly different rendering than native clients, causing minor overlaps in some cases
 
 #### 💘 Contributions and pull requests welcome!
 
